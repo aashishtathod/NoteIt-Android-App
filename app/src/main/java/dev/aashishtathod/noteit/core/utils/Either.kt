@@ -1,23 +1,11 @@
 package dev.aashishtathod.noteit.core.utils
 
-sealed class Either<T> {
-    data class Success<T>(val data: T) : Either<T>()
-    data class Error<T>(val message: String) : Either<T>()
+sealed class Either<out T> {
+    data class Success<out T>(
+        val data: T
+    ) : Either<T>()
 	
-    companion object {
-        fun <T> success(data: T) = Success(data)
-        fun <T> error(message: String) = Error<T>(message)
-    }
-	
-    inline fun onSuccess(block: (T) -> Unit): Either<T> = apply {
-        if (this is Success) {
-            block(data)
-        }
-    }
-	
-    inline fun onFailure(block: (String) -> Unit): Either<T> = apply {
-        if (this is Error) {
-            block(message)
-        }
-    }
+    data class Error(
+        val message: String
+    ) : Either<Nothing>()
 }

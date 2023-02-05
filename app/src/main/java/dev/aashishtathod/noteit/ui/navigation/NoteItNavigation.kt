@@ -14,7 +14,7 @@ const val NOTE_IT_NAV_HOST_ROUTE = "noty-main-route"
 fun NoteItNavigation() {
     val navController = rememberNavController()
 	
-    NavHost(navController, startDestination = Screen.Notes.route, route = NOTE_IT_NAV_HOST_ROUTE) {
+    NavHost(navController, startDestination = Screen.Login.route, route = NOTE_IT_NAV_HOST_ROUTE) {
 		/*composable(Screen.SignUp.route) {
 			SignUpScreen(
 				viewModel = hiltViewModel(),

@@ -1,7 +1,21 @@
 package dev.aashishtathod.noteit.domain.usecase
 
-class LoginUseCase {
+import dev.aashishtathod.noteit.core.utils.Either
+import dev.aashishtathod.noteit.domain.model.AuthCredential
+import dev.aashishtathod.noteit.domain.repository.UserRepository
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import javax.inject.Inject
+
+class LoginUseCase @Inject constructor(
+    private val userRepository: UserRepository
+) {
 	
-    operator fun invoke(username: String, password: String) {
+    operator fun invoke(
+        username: String,
+        password: String
+    ): Flow<Either<AuthCredential>> = flow {
+        val result = userRepository.login(username, password)
+        emit(result)
     }
 }
