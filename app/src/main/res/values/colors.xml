@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="primaryColor">#7885FF</color>
+    <color name="primaryColor">#FFE09A71</color>
     <color name="primaryLightColor">#f3f3f9</color>
     <color name="primaryDarkColor">#cccccc</color>
 
-    <color name="secondaryColor">#7885FF</color>
-    <color name="secondaryLightColor">#7885FF</color>
-    <color name="secondaryDarkColor">#7885FF</color>
+    <color name="secondaryColor">#FFE09A71</color>
+    <color name="secondaryLightColor">#FFE09A71</color>
+    <color name="secondaryDarkColor">#FFE09A71</color>
 
     <color name="background">#FFFFFF</color>
     <color name="onPrimary">#FFFFFF</color>

@@ -1,7 +1,8 @@
 package dev.aashishtathod.noteit.domain.exceptions
 
-class AuthValidationException(private val validationType: Int) :
-    Exception(validationType.toString())
+import dev.aashishtathod.noteit.domain.model.LoginValidation
+
+class AuthValidationException(private val validation: LoginValidation) : Exception()
 
 enum class AuthValidation(val value: Int) {
     INVALID_USERNAME(0),

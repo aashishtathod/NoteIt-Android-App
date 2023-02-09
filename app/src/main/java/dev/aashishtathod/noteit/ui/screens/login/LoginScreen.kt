@@ -101,7 +101,7 @@ private fun TopGreeting() {
     Column(Modifier.fillMaxWidth()) {
         Image(
             contentDescription = "App Logo",
-            painter = painterResource(id = R.drawable.noty_app_logo),
+            painter = painterResource(id = R.drawable.noteit_app_logo),
             modifier = Modifier
                 .padding(top = 60.dp)
                 .requiredSize(92.dp)

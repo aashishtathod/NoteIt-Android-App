@@ -4,10 +4,8 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.aashishtathod.noteit.core.presentation.BaseViewModel
 import dev.aashishtathod.noteit.core.utils.Either
-import dev.aashishtathod.noteit.domain.exceptions.AuthValidation
 import dev.aashishtathod.noteit.domain.usecase.AuthValidationUseCase
 import dev.aashishtathod.noteit.domain.usecase.LoginUseCase
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -16,7 +14,7 @@ import javax.inject.Inject
 class LoginViewModel @Inject constructor(
     private val loginUseCase: LoginUseCase,
     private val authValidationUseCase: AuthValidationUseCase
-//    private val updateTokenUseCase: UpdateTokenUseCase
+//    private val saveTokenUseCase: UpdateTokenUseCase
 ) : BaseViewModel<LoginState>(initialState = LoginState()) {
 	
     fun setUsername(username: String) {
@@ -32,44 +30,32 @@ class LoginViewModel @Inject constructor(
             val username = currentState.username
             val password = currentState.password
 			
-            authValidationUseCase(username, password, password).catch {
-                when (it.message?.toInt()) {
-                    AuthValidation.INVALID_USERNAME.value -> {
-                        setState { state -> state.copy(isValidUsername = false) }
-                    }
-                    AuthValidation.INVALID_USERNAME.value -> {
-                        setState { state -> state.copy(isValidPassword = false) }
-                    }
-                    AuthValidation.INVALID_USERNAME.value -> {
-                        setState { state -> state.copy(isValidPassword = false) }
-                    }
+            authValidationUseCase(username, password).collect {
+                setState { state ->
+                    state.copy(
+                        isValidUsername = it.isValidUsername,
+                        isValidPassword = it.isValidPassword
+                    )
                 }
-            }.collect {
-                if (it) {
-                    setState { state ->
-                        state.copy(
-                            isLoading = true,
-                            isValidUsername = true,
-                            isValidPassword = true
-                        )
-                    }
-					
-                    loginUseCase(username, password).collect {
-                        when (it) {
-                            is Either.Success -> {
-                                //    sessionManager.saveToken(authCredential.token)
-                                setState { state ->
-                                    state.copy(isLoading = false, isLoggedIn = true, error = null)
-                                }
+            }
+			
+            if (currentState.isValidUsername == true && currentState.isValidPassword == true) {
+                setState { it.copy(isLoading = true) }
+                loginUseCase(username, password).collect {
+                    when (it) {
+                        is Either.Success -> {
+                            //    sessionManager.saveToken(authCredential.token)
+                            setState { state ->
+                                state.copy(isLoading = false, isLoggedIn = true, error = null)
                             }
-                            is Either.Error -> {
-                                setState { state ->
-                                    state.copy(
-                                        isLoading = false,
-                                        isLoggedIn = false,
-                                        error = it.message
-                                    )
-                                }
+                        }
+                        is Either.Error -> {
+                            setState { state ->
+                                state.copy(
+                                    isLoading = false,
+                                    isLoggedIn = false,
+                                    error = it.message
+                                )
                             }
                         }
                     }

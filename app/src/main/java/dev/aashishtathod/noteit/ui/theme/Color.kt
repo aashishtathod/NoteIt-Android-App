@@ -4,7 +4,7 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
-val primary = Color(0xFF7885FF)
+val primary = Color(0xFFE09A71)
 
 val backgroundDay = Color(0xfff3f7f9)
 val backgroundNight = Color(0xff1A191E)
