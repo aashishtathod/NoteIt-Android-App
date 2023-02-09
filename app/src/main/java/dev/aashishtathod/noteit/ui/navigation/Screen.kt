@@ -1,6 +1,9 @@
 package dev.aashishtathod.noteit.ui.navigation
 
 sealed class Screen(val route: String, val name: String) {
+	
+    object Splash : Screen("splash", "Splash")
+	
     object SignUp : Screen("signup", "Sign Up")
 	
     object Login : Screen("login", "Login")

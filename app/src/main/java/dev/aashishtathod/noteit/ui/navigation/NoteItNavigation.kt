@@ -7,6 +7,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import dev.aashishtathod.noteit.ui.screens.login.LoginScreen
+import dev.aashishtathod.noteit.ui.screens.splash.SplashScreen
 
 const val NOTE_IT_NAV_HOST_ROUTE = "noty-main-route"
 
@@ -14,14 +15,15 @@ const val NOTE_IT_NAV_HOST_ROUTE = "noty-main-route"
 fun NoteItNavigation() {
     val navController = rememberNavController()
 	
-    NavHost(navController, startDestination = Screen.Login.route, route = NOTE_IT_NAV_HOST_ROUTE) {
-		/*composable(Screen.SignUp.route) {
-			SignUpScreen(
-				viewModel = hiltViewModel(),
-				onNavigateUp = { navController.navigateUp() },
-				onNavigateToNotes = { navController.popAllAndNavigateToNotes() }
-			)
-		}*/
+    NavHost(navController, startDestination = Screen.Splash.route, route = NOTE_IT_NAV_HOST_ROUTE) {
+        composable(Screen.Splash.route) {
+            SplashScreen(
+                viewModel = hiltViewModel(),
+                onNavigateToLogin = { navController.navigateToLogin() },
+                onNavigateToNotes = { /* Todo */ }
+            )
+        }
+		
         composable(Screen.Login.route) {
             LoginScreen(
                 viewModel = hiltViewModel(),
@@ -29,6 +31,15 @@ fun NoteItNavigation() {
                 onNavigateToNotes = { /*navController.popAllAndNavigateToNotes()*/ }
             )
         }
+		
+		/*composable(Screen.SignUp.route) {
+			SignUpScreen(
+				viewModel = hiltViewModel(),
+				onNavigateUp = { navController.navigateUp() },
+				onNavigateToNotes = { navController.popAllAndNavigateToNotes() }
+			)
+		}*/
+		
 		/*composable(Screen.AddNote.route) {
 			AddNoteScreen(
 				viewModel = hiltViewModel(),
@@ -64,19 +75,12 @@ fun NoteItNavigation() {
     }
 }
 
-/**
- * Launches Signup screen
- */
+fun NavController.navigateToLogin() = navigate(Screen.Login.route)
+
 fun NavController.navigateToSignup() = navigate(Screen.SignUp.route)
 
-/**
- * Launches About screen
- */
 fun NavController.navigateToAbout() = navigate(Screen.About.route)
 
-/**
- * Launches Add note screen
- */
 fun NavController.navigateToAddNote() = navigate(Screen.AddNote.route)
 
 /**
