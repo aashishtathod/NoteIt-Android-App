@@ -6,61 +6,61 @@ import dev.aashishtathod.noteit.core.presentation.BaseViewModel
 import dev.aashishtathod.noteit.core.utils.Either
 import dev.aashishtathod.noteit.domain.usecase.AuthValidationUseCase
 import dev.aashishtathod.noteit.domain.usecase.LoginUseCase
-import kotlinx.coroutines.flow.collect
+import dev.aashishtathod.noteit.domain.usecase.SaveTokenUseCase
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val loginUseCase: LoginUseCase,
-    private val authValidationUseCase: AuthValidationUseCase
-//    private val saveTokenUseCase: UpdateTokenUseCase
+	private val loginUseCase: LoginUseCase,
+	private val authValidationUseCase: AuthValidationUseCase,
+	private val saveTokenUseCase: SaveTokenUseCase
 ) : BaseViewModel<LoginState>(initialState = LoginState()) {
 	
-    fun setUsername(username: String) {
-        setState { state -> state.copy(username = username) }
-    }
+	fun setUsername(username: String) {
+		setState { state -> state.copy(username = username) }
+	}
 	
-    fun setPassword(password: String) {
-        setState { state -> state.copy(password = password) }
-    }
+	fun setPassword(password: String) {
+		setState { state -> state.copy(password = password) }
+	}
 	
-    fun login() {
-        viewModelScope.launch {
-            val username = currentState.username
-            val password = currentState.password
+	fun login() {
+		viewModelScope.launch {
+			val username = currentState.username
+			val password = currentState.password
 			
-            authValidationUseCase(username, password).collect {
-                setState { state ->
-                    state.copy(
-                        isValidUsername = it.isValidUsername,
-                        isValidPassword = it.isValidPassword
-                    )
-                }
-            }
+			authValidationUseCase(username, password).collect {
+				setState { state ->
+					state.copy(
+						isValidUsername = it.isValidUsername,
+						isValidPassword = it.isValidPassword
+					)
+				}
+			}
 			
-            if (currentState.isValidUsername == true && currentState.isValidPassword == true) {
-                setState { it.copy(isLoading = true) }
-                loginUseCase(username, password).collect {
-                    when (it) {
-                        is Either.Success -> {
-                            //    sessionManager.saveToken(authCredential.token)
-                            setState { state ->
-                                state.copy(isLoading = false, isLoggedIn = true, error = null)
-                            }
-                        }
-                        is Either.Error -> {
-                            setState { state ->
-                                state.copy(
-                                    isLoading = false,
-                                    isLoggedIn = false,
-                                    error = it.message
-                                )
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
+			if (currentState.isValidUsername == true && currentState.isValidPassword == true) {
+				setState { it.copy(isLoading = true) }
+				loginUseCase(username, password).collect {
+					when (it) {
+						is Either.Success -> {
+							saveTokenUseCase.invoke(it.data.token)
+							setState { state ->
+								state.copy(isLoading = false, isLoggedIn = true, error = null)
+							}
+						}
+						is Either.Error -> {
+							setState { state ->
+								state.copy(
+									isLoading = false,
+									isLoggedIn = false,
+									error = it.message
+								)
+							}
+						}
+					}
+				}
+			}
+		}
+	}
 }

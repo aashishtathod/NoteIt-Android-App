@@ -7,30 +7,41 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import dev.aashishtathod.noteit.ui.screens.login.LoginScreen
+import dev.aashishtathod.noteit.ui.screens.notes.NotesScreen
 import dev.aashishtathod.noteit.ui.screens.splash.SplashScreen
 
 const val NOTE_IT_NAV_HOST_ROUTE = "noty-main-route"
 
 @Composable
 fun NoteItNavigation() {
-    val navController = rememberNavController()
+	val navController = rememberNavController()
 	
-    NavHost(navController, startDestination = Screen.Splash.route, route = NOTE_IT_NAV_HOST_ROUTE) {
-        composable(Screen.Splash.route) {
-            SplashScreen(
-                viewModel = hiltViewModel(),
-                onNavigateToLogin = { navController.navigateToLogin() },
-                onNavigateToNotes = { /* Todo */ }
-            )
-        }
+	NavHost(navController, startDestination = Screen.Splash.route, route = NOTE_IT_NAV_HOST_ROUTE) {
 		
-        composable(Screen.Login.route) {
-            LoginScreen(
-                viewModel = hiltViewModel(),
-                onNavigateToSignup = { navController.navigateToSignup() },
-                onNavigateToNotes = { /*navController.popAllAndNavigateToNotes()*/ }
-            )
-        }
+		composable(Screen.Splash.route) {
+			SplashScreen(
+				viewModel = hiltViewModel(),
+				onNavigateToLogin = { navController.navigateToLogin() },
+				onNavigateToNotes = { navController.popAllAndNavigateToNotes() }
+			)
+		}
+		
+		composable(Screen.Login.route) {
+			LoginScreen(
+				viewModel = hiltViewModel(),
+				onNavigateToSignup = { navController.navigateToSignup() },
+				onNavigateToNotes = { navController.popAllAndNavigateToNotes() }
+			)
+		}
+		
+		composable(Screen.Notes.route) {
+			NotesScreen(
+				viewModel = hiltViewModel(),
+				onNavigateToAddNote = { navController.navigateToAddNote() },
+				onNavigateToNoteDetail = { navController.navigateToNoteDetail(it) },
+				onNavigateToLogin = { /*navController.popAllAndNavigateToLogin()*/ }
+			)
+		}
 		
 		/*composable(Screen.SignUp.route) {
 			SignUpScreen(
@@ -46,15 +57,7 @@ fun NoteItNavigation() {
 				onNavigateUp = { navController.navigateUp() }
 			)
 		}
-		composable(Screen.Notes.route) {
-			NotesScreen(
-				viewModel = hiltViewModel(),
-				onNavigateToAbout = { navController.navigateToAbout() },
-				onNavigateToAddNote = { navController.navigateToAddNote() },
-				onNavigateToNoteDetail = { navController.navigateToNoteDetail(it) },
-				onNavigateToLogin = { navController.popAllAndNavigateToLogin() }
-			)
-		}
+		
 		composable(
 			Screen.NotesDetail.route,
 			arguments = listOf(
@@ -72,7 +75,7 @@ fun NoteItNavigation() {
 		composable(Screen.About.route) {
 			AboutScreen(onNavigateUp = { navController.navigateUp() })
 		}*/
-    }
+	}
 }
 
 fun NavController.navigateToLogin() = navigate(Screen.Login.route)
@@ -96,12 +99,8 @@ fun NavController.navigateToNoteDetail(noteId: String) = navigate(Screen.NotesDe
 	launchSingleTop = true
 }*/
 
-/**
- * Clears backstack including current screen and navigates to Notes Screen
- */
-/*
+
 fun NavController.popAllAndNavigateToNotes() = navigate(Screen.Notes.route) {
 	launchSingleTop = true
-	popUpTo(NOTY_NAV_HOST_ROUTE)
+	popUpTo(NOTE_IT_NAV_HOST_ROUTE)
 }
-*/

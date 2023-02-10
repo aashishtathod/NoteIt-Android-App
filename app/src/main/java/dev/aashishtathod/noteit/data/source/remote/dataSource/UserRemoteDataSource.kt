@@ -10,13 +10,12 @@ import dev.aashishtathod.noteit.data.source.remote.dto.AuthResponse
 import dev.aashishtathod.noteit.data.source.remote.request.AuthRequest
 import javax.inject.Inject
 
-@Module
-@InstallIn(SingletonComponent::class)
+
 class UserRemoteDataSource @Inject constructor(
     private val apiService: AuthService
 ) : BaseRemoteDataSource() {
 	
     suspend fun login(authRequest: AuthRequest): Either<AuthResponse> = safeApiCall {
-        apiService.login(/*authRequest*/)
+        apiService.login(authRequest)
     }
 }

@@ -11,7 +11,6 @@ interface AuthService {
     @POST("/auth/register")
     suspend fun register(@Body authRequest: AuthRequest): AuthResponse
 	
-//    @POST("/auth/login")
-    @GET("9c60a059-92f3-4eaa-b4fd-efa7963ee35b")
-    suspend fun login(/*@Body authRequest: AuthRequest*/): AuthResponse
+    @POST("/auth/login")
+    suspend fun login(@Body authRequest: AuthRequest): AuthResponse
 }

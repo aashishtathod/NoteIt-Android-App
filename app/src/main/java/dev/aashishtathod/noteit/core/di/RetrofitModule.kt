@@ -6,6 +6,8 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import dev.aashishtathod.noteit.core.data.AppPreferences
+import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -18,48 +20,69 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 class RetrofitModule {
 	
-    companion object {
-        private const val DEFAULT_CONNECT_TIMEOUT_IN_SEC: Long = 90
-        private const val DEFAULT_WRITE_TIMEOUT_IN_SEC: Long = 90
-        private const val DEFAULT_READ_TIMEOUT_IN_SEC: Long = 90
-    }
+	companion object {
+		private const val DEFAULT_CONNECT_TIMEOUT_IN_SEC: Long = 90
+		private const val DEFAULT_WRITE_TIMEOUT_IN_SEC: Long = 90
+		private const val DEFAULT_READ_TIMEOUT_IN_SEC: Long = 90
+		
+		private const val AUTHORIZATION = "Authorization"
+		private const val CONTENT_TYPE = "Content-Type"
+		private const val JSON = "application/json"
+	}
 	
-    @Provides
-    @Singleton
-    fun provideOkHttpClient(
-        logging: HttpLoggingInterceptor
-    ): OkHttpClient {
-        return OkHttpClient.Builder()
-            .readTimeout(DEFAULT_READ_TIMEOUT_IN_SEC, TimeUnit.SECONDS)
-            .connectTimeout(DEFAULT_CONNECT_TIMEOUT_IN_SEC, TimeUnit.SECONDS)
-            .writeTimeout(DEFAULT_WRITE_TIMEOUT_IN_SEC, TimeUnit.SECONDS)
-            .addNetworkInterceptor(logging)
-            .build()
-    }
+	@Provides
+	@Singleton
+	fun provideOkHttpClient(
+		logging: HttpLoggingInterceptor,
+		interceptor: Interceptor
+	): OkHttpClient {
+		return OkHttpClient.Builder()
+			.readTimeout(DEFAULT_READ_TIMEOUT_IN_SEC, TimeUnit.SECONDS)
+			.connectTimeout(DEFAULT_CONNECT_TIMEOUT_IN_SEC, TimeUnit.SECONDS)
+			.writeTimeout(DEFAULT_WRITE_TIMEOUT_IN_SEC, TimeUnit.SECONDS)
+			.addNetworkInterceptor(logging)
+			.addInterceptor(interceptor)
+			.build()
+	}
 	
-    @Provides
-    @Singleton
-    fun provideHttpLoggingInterceptor(): HttpLoggingInterceptor {
-        val logging = HttpLoggingInterceptor()
-        logging.level = HttpLoggingInterceptor.Level.BODY
-        return logging
-    }
+	@Provides
+	@Singleton
+	fun provideHeadersInterceptor(appPreferences: AppPreferences) =
+		Interceptor { chain ->
+			val builder = chain.request().newBuilder()
+			builder.apply {
+				addHeader(AUTHORIZATION, "Bearer ${appPreferences.userLoginToken}")
+				addHeader(CONTENT_TYPE, JSON)
+			}
+			chain.proceed(
+				builder.build()
+			)
+		}
 	
-    @Provides
-    @Singleton
-    fun provideGson(): Gson {
-        return GsonBuilder()
-            .setLenient()
-            .serializeNulls() // To allow sending null values
-            .create()
-    }
 	
-    @Provides
-    @Singleton
-    fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit = Retrofit.Builder()
-        .client(okHttpClient)
-        .baseUrl("https://run.mocky.io/v3/")
-        .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-        .addConverterFactory(GsonConverterFactory.create())
-        .build()
+	@Provides
+	@Singleton
+	fun provideHttpLoggingInterceptor(): HttpLoggingInterceptor {
+		val logging = HttpLoggingInterceptor()
+		logging.level = HttpLoggingInterceptor.Level.BODY
+		return logging
+	}
+	
+	@Provides
+	@Singleton
+	fun provideGson(): Gson {
+		return GsonBuilder()
+			.setLenient()
+			.serializeNulls() // To allow sending null values
+			.create()
+	}
+	
+	@Provides
+	@Singleton
+	fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit = Retrofit.Builder()
+		.client(okHttpClient)
+		.baseUrl("https://noteit-ktor-backend-app-production.up.railway.app/")
+		.addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+		.addConverterFactory(GsonConverterFactory.create())
+		.build()
 }
