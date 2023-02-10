@@ -23,18 +23,17 @@ class NotesViewModel @Inject constructor(
 		viewModelScope.launch {
 			getAllNotesUseCase().collect {
 				when (it) {
-					is Either.Success -> {
-						setState { state ->
-							state.copy(isLoading = false, notes = it.data.notes)
-						}
+					is Either.Success -> setState { state ->
+						state.copy(isLoading = false, notes = it.data.notes)
 					}
-					is Either.Error -> {
-						setState { state ->
-							state.copy(isLoading = false, error = it.message)
-						}
+					
+					is Either.Error -> setState { state ->
+						state.copy(isLoading = false, error = it.message)
 					}
+					
 				}
 			}
 		}
+		
 	}
 }

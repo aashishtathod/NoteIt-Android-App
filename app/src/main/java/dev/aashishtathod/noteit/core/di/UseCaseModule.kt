@@ -6,9 +6,8 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import dev.aashishtathod.noteit.core.data.AppPreferences
 import dev.aashishtathod.noteit.domain.repository.AuthRepository
-import dev.aashishtathod.noteit.domain.usecase.AuthValidationUseCase
-import dev.aashishtathod.noteit.domain.usecase.LoginUseCase
-import dev.aashishtathod.noteit.domain.usecase.SaveTokenUseCase
+import dev.aashishtathod.noteit.domain.repository.NoteRepository
+import dev.aashishtathod.noteit.domain.usecase.*
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -26,4 +25,12 @@ class UseCaseModule {
     fun saveTokenUseCase(
         appPreferences: AppPreferences
     ): SaveTokenUseCase = SaveTokenUseCase(appPreferences)
+    
+    @Provides
+    fun noteValidationUseCase(): NoteValidationUseCase = NoteValidationUseCase()
+    
+    @Provides
+    fun addNoteUseCase(
+        noteRepository: NoteRepository
+    ): AddNoteUseCase = AddNoteUseCase(noteRepository)
 }
