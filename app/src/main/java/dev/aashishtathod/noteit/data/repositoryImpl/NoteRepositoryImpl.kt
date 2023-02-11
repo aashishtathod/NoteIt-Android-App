@@ -13,8 +13,8 @@ class NoteRepositoryImpl @Inject constructor(
 	private val noteRemoteDataSource: NoteRemoteDataSource
 ) : NoteRepository {
 	
-	override suspend fun getNoteById(noteId: String): Either<Note> {
-		TODO("Not yet implemented")
+	override suspend fun getNoteById(noteId: String): Either<NoteResponse> {
+		return noteRemoteDataSource.getNoteById(noteId)
 	}
 	
 	override suspend fun getAllNotes(): Either<NotesResponse> {

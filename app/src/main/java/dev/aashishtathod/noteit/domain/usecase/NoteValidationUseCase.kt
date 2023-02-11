@@ -6,7 +6,6 @@ import javax.inject.Inject
 
 
 class NoteValidationUseCase @Inject constructor() {
-	
 	operator fun invoke(title: String, note: String): Flow<Boolean> = flow {
 		val result = title.trim().length >= 4 && note.isNotBlank()
 		emit(result)

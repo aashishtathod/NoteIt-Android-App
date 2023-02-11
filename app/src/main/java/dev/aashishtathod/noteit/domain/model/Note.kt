@@ -1,7 +1,7 @@
 package dev.aashishtathod.noteit.domain.model
 
 data class Note(
-	val id: String,
+	val noteId: Int,
 	val title: String,
 	val note: String,
 	val createdAt: String,

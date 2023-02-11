@@ -11,7 +11,7 @@ import androidx.compose.ui.unit.dp
 import dev.aashishtathod.noteit.domain.model.Note
 
 @Composable
-fun NotesList(notes: List<Note>, onClick: (Note) -> Unit) {
+fun NotesList(notes: List<Note>, onClick: (note:Note) -> Unit) {
     LazyColumn(
         contentPadding = PaddingValues(vertical = 4.dp),
         modifier = Modifier.testTag("notesList")
@@ -27,7 +27,7 @@ fun NotesList(notes: List<Note>, onClick: (Note) -> Unit) {
                 )
             },
             key = {
-                Triple(it.id, it.title, it.note)
+                Triple(it.noteId, it.title, it.note)
             }
         )
     }

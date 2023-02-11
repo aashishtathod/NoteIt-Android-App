@@ -1,5 +1,6 @@
 package dev.aashishtathod.noteit.ui.screens.notes
 
+import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
@@ -72,7 +73,9 @@ fun NotesContent(
 			Column {
 				NotesList(
 					notes = notes,
-					onClick = { note -> onNavigateToNoteDetail(note.id) }
+					onClick = { note ->
+						onNavigateToNoteDetail(note.noteId.toString())
+					}
 				)
 			}
 		},

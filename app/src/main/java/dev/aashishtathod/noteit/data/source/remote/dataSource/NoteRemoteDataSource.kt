@@ -16,7 +16,11 @@ class NoteRemoteDataSource @Inject constructor(
 		apiService.getAllNotes()
 	}
 	
-	suspend fun addNote(noteRequest: NoteRequest):Either<NoteResponse> = safeApiCall {
+	suspend fun addNote(noteRequest: NoteRequest): Either<NoteResponse> = safeApiCall {
 		apiService.addNote(noteRequest)
+	}
+	
+	suspend fun getNoteById(noteId: String): Either<NoteResponse> = safeApiCall {
+		apiService.getNoteById(noteId.toInt())
 	}
 }

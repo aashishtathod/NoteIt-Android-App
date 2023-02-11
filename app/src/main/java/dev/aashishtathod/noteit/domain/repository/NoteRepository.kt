@@ -6,7 +6,7 @@ import dev.aashishtathod.noteit.data.source.remote.dto.NotesResponse
 import dev.aashishtathod.noteit.domain.model.Note
 
 interface NoteRepository {
-	suspend fun getNoteById(noteId: String): Either<Note>
+	suspend fun getNoteById(noteId: String): Either<NoteResponse>
 	
 	suspend fun getAllNotes(): Either<NotesResponse>
 	

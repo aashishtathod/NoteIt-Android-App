@@ -3,11 +3,14 @@ package dev.aashishtathod.noteit.ui.navigation
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import dev.aashishtathod.noteit.ui.screens.addNote.AddNoteScreen
 import dev.aashishtathod.noteit.ui.screens.login.LoginScreen
+import dev.aashishtathod.noteit.ui.screens.noteDetail.NoteDetailsScreen
 import dev.aashishtathod.noteit.ui.screens.notes.NotesScreen
 import dev.aashishtathod.noteit.ui.screens.splash.SplashScreen
 
@@ -51,16 +54,6 @@ fun NoteItNavigation() {
 			)
 		}
 		
-		/*composable(Screen.SignUp.route) {
-			SignUpScreen(
-				viewModel = hiltViewModel(),
-				onNavigateUp = { navController.navigateUp() },
-				onNavigateToNotes = { navController.popAllAndNavigateToNotes() }
-			)
-		}*/
-		
-		/*
-		
 		composable(
 			Screen.NotesDetail.route,
 			arguments = listOf(
@@ -69,15 +62,21 @@ fun NoteItNavigation() {
 		) {
 			val noteId = requireNotNull(it.arguments?.getString(Screen.NotesDetail.ARG_NOTE_ID))
 			NoteDetailsScreen(
-				viewModel = assistedViewModel {
-					NoteDetailViewModel.provideFactory(noteDetailViewModelFactory(), noteId)
-				},
+				noteId = noteId,
+				viewModel = hiltViewModel(),
 				onNavigateUp = { navController.navigateUp() }
 			)
 		}
-		composable(Screen.About.route) {
-			AboutScreen(onNavigateUp = { navController.navigateUp() })
+		
+		/*composable(Screen.SignUp.route) {
+			SignUpScreen(
+				viewModel = hiltViewModel(),
+				onNavigateUp = { navController.navigateUp() },
+				onNavigateToNotes = { navController.popAllAndNavigateToNotes() }
+			)
 		}*/
+		
+		
 	}
 }
 
