@@ -6,6 +6,7 @@ import dev.aashishtathod.noteit.data.source.remote.api.NoteService
 import dev.aashishtathod.noteit.data.source.remote.dto.NoteResponse
 import dev.aashishtathod.noteit.data.source.remote.dto.NotesResponse
 import dev.aashishtathod.noteit.data.source.remote.request.NoteRequest
+import dev.aashishtathod.noteit.data.source.remote.request.NoteUpdatePinRequest
 import javax.inject.Inject
 
 class NoteRemoteDataSource @Inject constructor(
@@ -27,5 +28,16 @@ class NoteRemoteDataSource @Inject constructor(
 	suspend fun updateNote(noteId: Int, noteRequest: NoteRequest): Either<NoteResponse> =
 		safeApiCall {
 			apiService.updateNote(noteId, noteRequest)
+		}
+	
+	suspend fun updateNotePin(
+		noteId: Int, noteUpdatePinRequest: NoteUpdatePinRequest
+	): Either<NoteResponse> = safeApiCall {
+		apiService.updateNotePin(noteId, noteUpdatePinRequest)
+	}
+	
+	suspend fun deleteNote(noteId: Int): Either<NoteResponse> =
+		safeApiCall {
+			apiService.deleteNote(noteId)
 		}
 }

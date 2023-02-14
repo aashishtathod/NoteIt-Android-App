@@ -5,7 +5,7 @@ import dev.aashishtathod.noteit.data.source.remote.dataSource.NoteRemoteDataSour
 import dev.aashishtathod.noteit.data.source.remote.dto.NoteResponse
 import dev.aashishtathod.noteit.data.source.remote.dto.NotesResponse
 import dev.aashishtathod.noteit.data.source.remote.request.NoteRequest
-import dev.aashishtathod.noteit.domain.model.Note
+import dev.aashishtathod.noteit.data.source.remote.request.NoteUpdatePinRequest
 import dev.aashishtathod.noteit.domain.repository.NoteRepository
 import javax.inject.Inject
 
@@ -25,20 +25,20 @@ class NoteRepositoryImpl @Inject constructor(
 		return noteRemoteDataSource.addNote(NoteRequest(title, note))
 	}
 	
-	override suspend fun updateNote(noteId: Int, title: String, note: String): Either<NoteResponse> {
+	override suspend fun updateNote(
+		noteId: Int,
+		title: String,
+		note: String
+	): Either<NoteResponse> {
 		return noteRemoteDataSource.updateNote(noteId, NoteRequest(title, note))
 	}
 	
-	override suspend fun deleteNote(noteId: String): Either<String> {
-		TODO("Not yet implemented")
+	override suspend fun deleteNote(noteId: Int): Either<NoteResponse> {
+		return noteRemoteDataSource.deleteNote(noteId)
 	}
 	
-	override suspend fun pinNote(noteId: String, isPinned: Boolean): Either<String> {
-		TODO("Not yet implemented")
-	}
-	
-	override suspend fun deleteAllNotes() {
-		TODO("Not yet implemented")
+	override suspend fun updateNotePin(noteId: Int, isPinned: Boolean): Either<NoteResponse> {
+		return noteRemoteDataSource.updateNotePin(noteId, NoteUpdatePinRequest(isPinned))
 	}
 	
 }

@@ -24,6 +24,7 @@ import dev.aashishtathod.noteit.core.utils.ext.collectState
 import dev.aashishtathod.noteit.ui.components.actions.DeleteAction
 import dev.aashishtathod.noteit.ui.components.actions.PinAction
 import dev.aashishtathod.noteit.ui.components.dialog.ConfirmationDialog
+import dev.aashishtathod.noteit.ui.components.dialog.LoaderDialog
 import dev.aashishtathod.noteit.ui.components.scaffold.NoteItAppBar
 import dev.aashishtathod.noteit.ui.components.scaffold.NoteItScaffold
 import dev.shreyaspatil.noty.composeapp.component.text.NoteField
@@ -45,6 +46,7 @@ fun NoteDetailsScreen(
 	var showDeleteNoteConfirmation by remember { mutableStateOf(false) }
 	
 	NoteDetailContent(
+		isLoading = state.isLoading,
 		title = state.title,
 		note = state.note,
 		error = state.error,
@@ -52,7 +54,7 @@ fun NoteDetailsScreen(
 		showSaveButton = state.showSave,
 		onTitleChange = viewModel::setTitle,
 		onNoteChange = viewModel::setNote,
-		onPinClick = { /*viewModel::togglePin*/ },
+		onPinClick = { viewModel.togglePin() },
 		onSaveClick = { viewModel.save() },
 		onDeleteClick = { showDeleteNoteConfirmation = true },
 		onNavigateUp = onNavigateUp,
@@ -60,7 +62,7 @@ fun NoteDetailsScreen(
 	
 	DeleteNoteConfirmation(
 		show = showDeleteNoteConfirmation,
-		onConfirm = { /*viewModel::delete*/ },
+		onConfirm = { viewModel.deleteNote() },
 		onDismiss = { showDeleteNoteConfirmation = false }
 	)
 	
@@ -73,6 +75,7 @@ fun NoteDetailsScreen(
 
 @Composable
 fun NoteDetailContent(
+	isLoading: Boolean,
 	title: String,
 	note: String,
 	error: String?,
@@ -85,6 +88,10 @@ fun NoteDetailContent(
 	onNavigateUp: () -> Unit,
 	onDeleteClick: () -> Unit,
 ) {
+	if (isLoading) {
+		LoaderDialog()
+	}
+	
 	val focusRequester = remember { FocusRequester() }
 	
 	NoteItScaffold(

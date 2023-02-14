@@ -3,6 +3,7 @@ package dev.aashishtathod.noteit.data.source.remote.api
 import dev.aashishtathod.noteit.data.source.remote.dto.NoteResponse
 import dev.aashishtathod.noteit.data.source.remote.dto.NotesResponse
 import dev.aashishtathod.noteit.data.source.remote.request.NoteRequest
+import dev.aashishtathod.noteit.data.source.remote.request.NoteUpdatePinRequest
 import retrofit2.Response
 import retrofit2.http.*
 
