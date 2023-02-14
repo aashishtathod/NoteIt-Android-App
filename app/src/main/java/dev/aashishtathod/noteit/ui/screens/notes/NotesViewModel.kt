@@ -13,12 +13,7 @@ class NotesViewModel @Inject constructor(
 	private val getAllNotesUseCase: GetAllNotesUseCase
 ) : BaseViewModel<NotesState>(NotesState()) {
 	
-	
-	init {
-		getNotes()
-	}
-	
-	private fun getNotes() {
+	 fun getNotes() {
 		setState { state -> state.copy(isLoading = true) }
 		viewModelScope.launch {
 			getAllNotesUseCase().collect {

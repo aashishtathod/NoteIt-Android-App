@@ -1,6 +1,5 @@
 package dev.aashishtathod.noteit.ui.screens.notes
 
-import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
@@ -9,14 +8,16 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import dev.aashishtathod.noteit.core.utils.NotyPreview
 import dev.aashishtathod.noteit.core.utils.ext.collectState
 import dev.aashishtathod.noteit.domain.model.Note
 import dev.aashishtathod.noteit.ui.components.note.NotesList
 import dev.aashishtathod.noteit.ui.components.scaffold.NoteItAppBar
 import dev.aashishtathod.noteit.ui.components.scaffold.NoteItScaffold
-import dev.aashishtathod.noteit.R
-import dev.aashishtathod.noteit.core.utils.NotyPreview
 
 @Composable
 fun NotesScreen(
@@ -27,15 +28,34 @@ fun NotesScreen(
 ) {
 	val state by viewModel.collectState()
 	
+	val lifecycle = LocalLifecycleOwner.current.lifecycle
+	val lifecycleEvent = remember { mutableStateOf(Lifecycle.Event.ON_ANY) }
+	
+	DisposableEffect(lifecycle) {
+		val observer = LifecycleEventObserver { _, event ->
+			lifecycleEvent.value = event
+		}
+		lifecycle.addObserver(observer)
+		onDispose {
+			lifecycle.removeObserver(observer)
+		}
+	}
+	
+	if (lifecycleEvent.value == Lifecycle.Event.ON_RESUME) {
+		LaunchedEffect(lifecycleEvent) {
+			viewModel.getNotes()
+		}
+	}
+	
 	NotesContent(
 		isLoading = state.isLoading,
 		notes = state.notes,
-	//	isConnectivityAvailable = state.isConnectivityAvailable,
-	//	onRefresh = viewModel::syncNotes,
-	//	onToggleTheme = { viewModel.setDarkMode(!isInDarkMode) },
-	//	onAboutClick = onNavigateToAbout,
+		//	isConnectivityAvailable = state.isConnectivityAvailable,
+		//	onRefresh = viewModel::syncNotes,
+		//	onToggleTheme = { viewModel.setDarkMode(!isInDarkMode) },
+		//	onAboutClick = onNavigateToAbout,
 		onAddNoteClick = onNavigateToAddNote,
-	//	onLogoutClick = { showLogoutConfirmation = true },
+		//	onLogoutClick = { showLogoutConfirmation = true },
 		onNavigateToNoteDetail = onNavigateToNoteDetail
 	)
 	
@@ -59,7 +79,11 @@ fun NotesContent(
 //	onLogoutClick: () -> Unit,      Todo
 	onNavigateToNoteDetail: (String) -> Unit
 ) {
+	
+	
+	
 	NoteItScaffold(
+		isLoading = isLoading,
 		error = error,
 		appBar = {
 			NoteItAppBar(
@@ -101,7 +125,7 @@ fun NotesScreenPreview() = NotyPreview {
 	NotesContent(
 		isLoading = false,
 		notes = emptyList(),
-		onAddNoteClick = {  },
-		onNavigateToNoteDetail ={}
+		onAddNoteClick = { },
+		onNavigateToNoteDetail = {}
 	)
 }

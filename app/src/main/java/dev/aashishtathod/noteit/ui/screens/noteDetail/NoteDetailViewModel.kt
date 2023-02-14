@@ -41,8 +41,8 @@ class NoteDetailViewModel @Inject constructor(
 	}
 	
 	fun loadNote(noteId: String) {
+		setState { state -> state.copy(isLoading = true) }
 		viewModelScope.launch {
-			setState { state -> state.copy(isLoading = true) }
 			getNoteUseCase(noteId).collect {
 				when (it) {
 					is Either.Success -> {
