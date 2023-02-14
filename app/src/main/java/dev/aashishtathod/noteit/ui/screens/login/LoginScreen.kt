@@ -41,7 +41,7 @@ fun LoginScreen(
         isValidPassword = state.isValidPassword ?: true,
         onUsernameChange = viewModel::setUsername,
         onPasswordChange = viewModel::setPassword,
-        onLoginClick = viewModel::login,
+        onLoginClick = viewModel::validateCredentials,
         onSignupClick = onNavigateToSignup,
         error = state.error
     )

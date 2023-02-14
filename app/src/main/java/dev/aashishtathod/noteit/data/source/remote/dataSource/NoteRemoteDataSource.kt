@@ -23,4 +23,9 @@ class NoteRemoteDataSource @Inject constructor(
 	suspend fun getNoteById(noteId: String): Either<NoteResponse> = safeApiCall {
 		apiService.getNoteById(noteId.toInt())
 	}
+	
+	suspend fun updateNote(noteId: Int, noteRequest: NoteRequest): Either<NoteResponse> =
+		safeApiCall {
+			apiService.updateNote(noteId, noteRequest)
+		}
 }

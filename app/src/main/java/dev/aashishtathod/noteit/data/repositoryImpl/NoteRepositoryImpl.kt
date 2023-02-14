@@ -25,8 +25,8 @@ class NoteRepositoryImpl @Inject constructor(
 		return noteRemoteDataSource.addNote(NoteRequest(title, note))
 	}
 	
-	override suspend fun updateNote(noteId: String, title: String, note: String): Either<String> {
-		TODO("Not yet implemented")
+	override suspend fun updateNote(noteId: Int, title: String, note: String): Either<NoteResponse> {
+		return noteRemoteDataSource.updateNote(noteId, NoteRequest(title, note))
 	}
 	
 	override suspend fun deleteNote(noteId: String): Either<String> {

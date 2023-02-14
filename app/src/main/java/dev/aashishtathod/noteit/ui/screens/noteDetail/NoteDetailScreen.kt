@@ -45,15 +45,15 @@ fun NoteDetailsScreen(
 	var showDeleteNoteConfirmation by remember { mutableStateOf(false) }
 	
 	NoteDetailContent(
-		title = state.title ?: "",
-		note = state.note ?: "",
+		title = state.title,
+		note = state.note,
 		error = state.error,
 		isPinned = state.isPinned,
 		showSaveButton = state.showSave,
 		onTitleChange = viewModel::setTitle,
 		onNoteChange = viewModel::setNote,
 		onPinClick = { /*viewModel::togglePin*/ },
-		onSaveClick = { /*viewModel::save*/ },
+		onSaveClick = { viewModel.save() },
 		onDeleteClick = { showDeleteNoteConfirmation = true },
 		onNavigateUp = onNavigateUp,
 	)

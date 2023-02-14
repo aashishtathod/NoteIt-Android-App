@@ -25,7 +25,7 @@ class LoginViewModel @Inject constructor(
 		setState { state -> state.copy(password = password) }
 	}
 	
-	fun login() {
+	fun validateCredentials() {
 		viewModelScope.launch {
 			val username = currentState.username
 			val password = currentState.password
@@ -37,30 +37,35 @@ class LoginViewModel @Inject constructor(
 						isValidPassword = it.isValidPassword
 					)
 				}
-			}
-			
-			if (currentState.isValidUsername == true && currentState.isValidPassword == true) {
-				setState { it.copy(isLoading = true) }
-				loginUseCase(username, password).collect {
-					when (it) {
-						is Either.Success -> {
-							saveTokenUseCase.invoke(it.data.token)
-							setState { state ->
-								state.copy(isLoading = false, isLoggedIn = true, error = null)
-							}
-						}
-						is Either.Error -> {
-							setState { state ->
-								state.copy(
-									isLoading = false,
-									isLoggedIn = false,
-									error = it.message
-								)
-							}
-						}
-					}
+				if (it.isValidUsername and it.isValidPassword) {
+					login(username, password)
 				}
 			}
 		}
 	}
+	
+	private suspend fun login(username: String, password: String) {
+		setState { it.copy(isLoading = true) }
+		loginUseCase(username, password).collect {
+			when (it) {
+				is Either.Success -> {
+					saveTokenUseCase.invoke(it.data.token)
+					setState { state ->
+						state.copy(isLoading = false, isLoggedIn = true, error = null)
+					}
+				}
+				is Either.Error -> {
+					setState { state ->
+						state.copy(
+							isLoading = false,
+							isLoggedIn = false,
+							error = it.message
+						)
+					}
+				}
+			}
+		}
+		
+	}
+	
 }

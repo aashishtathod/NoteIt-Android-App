@@ -7,13 +7,15 @@ import dev.aashishtathod.noteit.core.utils.Either
 import dev.aashishtathod.noteit.domain.model.Note
 import dev.aashishtathod.noteit.domain.usecase.GetNoteUseCase
 import dev.aashishtathod.noteit.domain.usecase.NoteValidationUseCase
+import dev.aashishtathod.noteit.domain.usecase.UpdateNoteUseCase
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class NoteDetailViewModel @Inject constructor(
 	private val noteValidationUseCase: NoteValidationUseCase,
-	private val getNoteUseCase: GetNoteUseCase
+	private val getNoteUseCase: GetNoteUseCase,
+	private val updateNoteUseCase: UpdateNoteUseCase
 ) : BaseViewModel<NoteDetailState>(NoteDetailState()) {
 	
 	private lateinit var currentNote: Note
@@ -64,5 +66,31 @@ class NoteDetailViewModel @Inject constructor(
 			}
 		}
 	}
+	
+	fun save() {
+		val title = currentState.title.trim()
+		val note = currentState.note.trim()
+		
+		setState { state -> state.copy(isLoading = true) }
+		viewModelScope.launch {
+			updateNoteUseCase(currentNote.noteId, title, note).collect {
+				when (it) {
+					is Either.Success -> setState { state ->
+						state.copy(
+							isLoading = false,
+							finished = true
+						)
+					}
+					is Either.Error -> setState { state ->
+						state.copy(
+							isLoading = false,
+							error = it.message
+						)
+					}
+				}
+			}
+		}
+	}
+	
 	
 }

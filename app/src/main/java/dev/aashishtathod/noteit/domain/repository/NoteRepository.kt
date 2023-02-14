@@ -13,15 +13,15 @@ interface NoteRepository {
 	suspend fun addNote(title: String, note: String): Either<NoteResponse>
 	
 	suspend fun updateNote(
-		noteId: String,
+		noteId: Int,
 		title: String,
 		note: String
-	): Either<String>
+	): Either<NoteResponse>
 	
 	suspend fun deleteNote(noteId: String): Either<String>
 	
 	suspend fun pinNote(noteId: String, isPinned: Boolean): Either<String>
 	
-	suspend fun deleteAllNotes()
+//	suspend fun deleteAllNotes()
 	
 }

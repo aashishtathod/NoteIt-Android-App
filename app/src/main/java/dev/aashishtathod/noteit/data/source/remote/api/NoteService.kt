@@ -3,10 +3,8 @@ package dev.aashishtathod.noteit.data.source.remote.api
 import dev.aashishtathod.noteit.data.source.remote.dto.NoteResponse
 import dev.aashishtathod.noteit.data.source.remote.dto.NotesResponse
 import dev.aashishtathod.noteit.data.source.remote.request.NoteRequest
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Path
+import retrofit2.Response
+import retrofit2.http.*
 
 interface NoteService {
 	
@@ -21,5 +19,23 @@ interface NoteService {
 	@GET("note/{noteId}")
 	suspend fun getNoteById(
 		@Path("noteId") noteId: Int
+	): NoteResponse
+	
+	
+	@PUT("/note/{noteId}")
+	suspend fun updateNote(
+		@Path("noteId") noteId: Int,
+		@Body noteRequest: NoteRequest
+	): NoteResponse
+	
+	@DELETE("/note/{noteId}")
+	suspend fun deleteNote(
+		@Path("noteId") noteId: Int
+	): NoteResponse
+	
+	@PATCH("/note/{noteId}/pin")
+	suspend fun updateNotePin(
+		@Path("noteId") noteId: Int,
+		@Body noteRequest: NoteUpdatePinRequest
 	): NoteResponse
 }
