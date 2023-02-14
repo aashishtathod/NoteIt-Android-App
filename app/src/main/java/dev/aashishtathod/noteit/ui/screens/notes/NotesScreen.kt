@@ -51,9 +51,6 @@ fun NotesScreen(
 		isLoading = state.isLoading,
 		notes = state.notes,
 		//	isConnectivityAvailable = state.isConnectivityAvailable,
-		//	onRefresh = viewModel::syncNotes,
-		//	onToggleTheme = { viewModel.setDarkMode(!isInDarkMode) },
-		//	onAboutClick = onNavigateToAbout,
 		onAddNoteClick = onNavigateToAddNote,
 		//	onLogoutClick = { showLogoutConfirmation = true },
 		onNavigateToNoteDetail = onNavigateToNoteDetail
@@ -74,13 +71,10 @@ fun NotesContent(
 	notes: List<Note>,
 //	isConnectivityAvailable: Boolean?, Todo
 	error: String? = null,
-//	onRefresh: () -> Unit,      Todo
 	onAddNoteClick: () -> Unit,
 //	onLogoutClick: () -> Unit,      Todo
 	onNavigateToNoteDetail: (String) -> Unit
 ) {
-	
-	
 	
 	NoteItScaffold(
 		isLoading = isLoading,

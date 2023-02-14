@@ -11,17 +11,19 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import dev.aashishtathod.noteit.R
+import dev.aashishtathod.noteit.ui.anim.LottieAnimation
 
 @Composable
 fun LoaderDialog() {
     Dialog(onDismissRequest = {}) {
         Surface(modifier = Modifier.size(128.dp)) {
-			/*LottieAnimation(
+			LottieAnimation(
 				resId = R.raw.loading,
 				modifier = Modifier
 					.padding(16.dp)
 					.size(100.dp)
-			)*/
+			)
         }
     }
 }
@@ -34,12 +36,12 @@ fun FailureDialog(failureMessage: String, onDismissed: () -> Unit = {}) {
         Dialog(onDismissRequest = {}) {
             Surface {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
-					/*	LottieAnimation(
+						LottieAnimation(
 							resId = R.raw.failure,
 							modifier = Modifier
 								.padding(16.dp)
 								.size(84.dp)
-						)*/
+						)
                     Text(
                         text = failureMessage,
                         color = MaterialTheme.colors.onSurface,
