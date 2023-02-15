@@ -8,6 +8,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import dev.aashishtathod.noteit.ui.screens.SignUpScreen
 import dev.aashishtathod.noteit.ui.screens.addNote.AddNoteScreen
 import dev.aashishtathod.noteit.ui.screens.login.LoginScreen
 import dev.aashishtathod.noteit.ui.screens.noteDetail.NoteDetailsScreen
@@ -34,6 +35,14 @@ fun NoteItNavigation() {
 			LoginScreen(
 				viewModel = hiltViewModel(),
 				onNavigateToSignup = { navController.navigateToSignup() },
+				onNavigateToNotes = { navController.popAllAndNavigateToNotes() }
+			)
+		}
+		
+		composable(Screen.SignUp.route) {
+			SignUpScreen(
+				viewModel = hiltViewModel(),
+				onNavigateUp = { navController.navigateUp() },
 				onNavigateToNotes = { navController.popAllAndNavigateToNotes() }
 			)
 		}
@@ -67,15 +76,6 @@ fun NoteItNavigation() {
 				onNavigateUp = { navController.navigateUp() }
 			)
 		}
-		
-		/*composable(Screen.SignUp.route) {
-			SignUpScreen(
-				viewModel = hiltViewModel(),
-				onNavigateUp = { navController.navigateUp() },
-				onNavigateToNotes = { navController.popAllAndNavigateToNotes() }
-			)
-		}*/
-		
 		
 	}
 }

@@ -18,6 +18,7 @@ package dev.shreyaspatil.noty.composeapp.component.text
 
 import androidx.compose.material.Icon
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Face
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -37,6 +38,24 @@ fun UsernameTextField(
         onValueChange = onValueChange,
         modifier = modifier,
         leadingIcon = { Icon(Icons.Outlined.Person, "User") },
+        isError = isError,
+        helperText = stringResource(R.string.message_field_username_invalid)
+    )
+}
+
+@Composable
+fun NameTextField(
+    modifier: Modifier = Modifier,
+    value: String = "",
+    isError: Boolean = false,
+    onValueChange: (String) -> Unit
+) {
+    NoteItTextField(
+        value = value,
+        label = "Name",
+        onValueChange = onValueChange,
+        modifier = modifier,
+        leadingIcon = { Icon(Icons.Outlined.Face, "Name") },
         isError = isError,
         helperText = stringResource(R.string.message_field_username_invalid)
     )

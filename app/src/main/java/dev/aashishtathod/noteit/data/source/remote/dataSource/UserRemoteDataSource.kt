@@ -14,6 +14,10 @@ import javax.inject.Inject
 class UserRemoteDataSource @Inject constructor(
     private val apiService: AuthService
 ) : BaseRemoteDataSource() {
+    
+    suspend fun signup(authRequest: AuthRequest): Either<AuthResponse> = safeApiCall {
+        apiService.signup(authRequest)
+    }
 	
     suspend fun login(authRequest: AuthRequest): Either<AuthResponse> = safeApiCall {
         apiService.login(authRequest)

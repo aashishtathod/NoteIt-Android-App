@@ -19,7 +19,7 @@ class NotesViewModel @Inject constructor(
 			getAllNotesUseCase().collect {
 				when (it) {
 					is Either.Success -> setState { state ->
-						state.copy(isLoading = false, notes = it.data.notes)
+						state.copy(isLoading = false, notes = it.data.notes ?: emptyList())
 					}
 					
 					is Either.Error -> setState { state ->

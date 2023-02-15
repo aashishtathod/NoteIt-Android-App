@@ -5,10 +5,14 @@ import dev.aashishtathod.noteit.domain.model.AuthCredential
 
 interface AuthRepository {
 	
-    suspend fun register(username: String, password: String): Either<AuthCredential>
-    
-    suspend fun login(
-        username: String,
-        password: String
-    ): Either<AuthCredential>
+	suspend fun signup(
+		name: String,
+		username: String,
+		password: String
+	): Either<AuthCredential>
+	
+	suspend fun login(
+		username: String,
+		password: String
+	): Either<AuthCredential>
 }

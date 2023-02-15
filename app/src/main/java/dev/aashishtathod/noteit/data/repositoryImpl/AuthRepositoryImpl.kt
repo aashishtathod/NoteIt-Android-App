@@ -8,22 +8,31 @@ import dev.aashishtathod.noteit.domain.repository.AuthRepository
 import javax.inject.Inject
 
 class AuthRepositoryImpl @Inject constructor(
-    private val userRemoteDataSource: UserRemoteDataSource
+	private val userRemoteDataSource: UserRemoteDataSource
 ) : AuthRepository {
 	
-    override suspend fun register(username: String, password: String): Either<AuthCredential> {
-        TODO("Not yet implemented")
-    }
-	
-    override suspend fun login(
-        username: String,
-        password: String
-    ): Either<AuthCredential> {
-        val result = userRemoteDataSource.login(AuthRequest(username, password))
+	override suspend fun signup(
+		name: String,
+		username: String,
+		password: String
+	): Either<AuthCredential> {
+		val result = userRemoteDataSource.signup(AuthRequest(username, password, name))
 		
-        return when (result) {
-            is Either.Success -> Either.Success(AuthCredential(result.data.token))
-            is Either.Error -> Either.Error(result.message)
-        }
-    }
+		return when (result) {
+			is Either.Success -> Either.Success(AuthCredential(result.data.token))
+			is Either.Error -> Either.Error(result.message)
+		}
+	}
+	
+	override suspend fun login(
+		username: String,
+		password: String
+	): Either<AuthCredential> {
+		val result = userRemoteDataSource.login(AuthRequest(username, password))
+		
+		return when (result) {
+			is Either.Success -> Either.Success(AuthCredential(result.data.token))
+			is Either.Error -> Either.Error(result.message)
+		}
+	}
 }

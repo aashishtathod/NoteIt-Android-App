@@ -6,6 +6,6 @@ import dev.aashishtathod.noteit.domain.model.Note
 data class NotesResponse(
 	override val status: Int,
 	override val message: String,
-	val notes: List<Note> = emptyList()
+	val notes: List<Note>? = null
 ) : BaseResponse
 

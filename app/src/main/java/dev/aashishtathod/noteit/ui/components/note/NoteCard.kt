@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -34,7 +35,7 @@ fun NoteCard(title: String, note: String, isPinned: Boolean, onNoteClick: () -> 
 			Row(Modifier.fillMaxWidth()) {
 				Text(
 					text = title,
-					style = MaterialTheme.typography.h5,
+					style = MaterialTheme.typography.h6,
 					color = MaterialTheme.colors.onPrimary,
 					fontWeight = FontWeight.Bold,
 					modifier = Modifier.weight(1f)
@@ -47,13 +48,14 @@ fun NoteCard(title: String, note: String, isPinned: Boolean, onNoteClick: () -> 
 					)
 				}
 			}
-			Spacer(modifier = Modifier.height(12.dp))
+			Spacer(modifier = Modifier.height(10.dp))
 			Text(
 				text = note,
 				style = MaterialTheme.typography.body1,
 				color = MaterialTheme.colors.onPrimary,
 				lineHeight = 24.sp,
-				maxLines = 2
+				maxLines = 2,
+				overflow = TextOverflow.Ellipsis
 			)
 		}
 	}
